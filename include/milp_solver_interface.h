@@ -52,4 +52,5 @@ int virtex_start_optimizer(param_to_solver *, param_from_solver *);
 int virtex_start_optimizer_v5(param_to_solver *, param_from_solver *);
 int pynq_start_optimizer(param_to_solver *, param_from_solver *);
 int vc707_start_optimizer(param_to_solver *, param_from_solver *);
+int vcu118_start_optimizer(param_to_solver *, param_from_solver *);
 #endif // ZYNQ_MODEL_H

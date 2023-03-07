@@ -32,6 +32,8 @@
 //    #include "pynq.h"
 #elif FPGA_VC707 
     #include "vc707_fine_grained.h"
+#elif FPGA_VCU118 
+    #include "vcu118_fine_grained.h"
 #endif
 
 namespace Ui {
@@ -74,6 +76,8 @@ public:
     pynq *pynq_inst;
 #elif FPGA_VC707
     vc707 *vc707_inst;
+#elif FPGA_VCU118
+    vcu118 *vcu118_inst;
 #endif
 
     unsigned long num_rm_partitions = 0;

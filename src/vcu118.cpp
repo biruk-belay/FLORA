@@ -1,6 +1,7 @@
-#include "vc707.h"
+#include "vcu118.h"
 
-vc707::vc707()
+vcu118::vcu118()
 {
 //    vc707::initialize_clk_reg();
 }
+

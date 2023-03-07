@@ -9,6 +9,12 @@ using namespace std;
 #ifndef GENERATE_XDC_H
 #define GENERATE_XDC_H
 
+#ifdef FPGA_VCU118 
+#define US_FPGA 1
+#else
+#define US_FPGA 0
+#endif
+
 //TODO: Make slot_names be assigned dynamically depending on the 
 //      number of slots instead of being a fixed array
 
@@ -59,12 +65,18 @@ string slot_names[] = {"slot_0", "slot_1", "slot_2", "slot_3",
         write_xdc << "resize_pblock [get_pblocks pblock_"<<slot_names[a]<< "] -add {RAMB36_X" <<slices_in_slot[a][2].slice_x1<<"Y" <<\
                     slices_in_slot[a][2].slice_y1 <<":" <<"RAMB36_X"<<slices_in_slot[a][2].slice_x2<<"Y"<<slices_in_slot[a][2].slice_y2 << "}" <<endl;\
         }\
+        if (US_FPGA == 1) \
+        if((*from_fp_solver->dsp_from_solver)[a] != 0) {\
+        write_xdc << "resize_pblock [get_pblocks pblock_"<<slot_names[a]<< "] -add {DSP48E2_X" <<slices_in_slot[a][3].slice_x1<<"Y" <<\
+                    slices_in_slot[a][3].slice_y1 <<":" <<"DSP48E2_X"<<slices_in_slot[a][3].slice_x2<<"Y"<<slices_in_slot[a][3].slice_y2 << "}" <<endl;\
+        }\
+        else \
         if((*from_fp_solver->dsp_from_solver)[a] != 0) {\
         write_xdc << "resize_pblock [get_pblocks pblock_"<<slot_names[a]<< "] -add {DSP48_X" <<slices_in_slot[a][3].slice_x1<<"Y" <<\
                     slices_in_slot[a][3].slice_y1 <<":" <<"DSP48_X"<<slices_in_slot[a][3].slice_x2<<"Y"<<slices_in_slot[a][3].slice_y2 << "}" <<endl;\
         }\
         write_xdc << "set_property RESET_AFTER_RECONFIG true [get_pblocks pblock_"<< slot_names[a] <<"]" <<endl;\
-        write_xdc << "set_property SNAPPING_MODE ON [get_pblocks pblock_"<< slot_names[a] <<"]" <<endl;\
+        write_xdc << "set_property SNAPPING_MODE OFF [get_pblocks pblock_"<< slot_names[a] <<"]" <<endl;\
         write_xdc <<endl <<endl;\
     }\
     write_xdc << "set_property SEVERITY {Warning} [get_drc_checks NSTD-1]" <<endl;\
@@ -95,7 +107,7 @@ string slot_names[] = {"slot_0", "slot_1", "slot_2", "slot_3",
                 if(k < x + w){\
                     if((fpga_type->fg[k].type_of_res) == m) {\
                         output_vec[i][index].slice_x1 = fpga_type->fg[k].slice_1;\
-                        /*cout << "left m " << m << " k " << k << " res " <<fpga_type->fg[k].slice_2 <<endl;*/\
+                        /*cout << "left m " << m << " k " << k << " res " <<fpga_type->fg[k].slice_1 <<endl;*/\
                         flag = 1;\
                     }\
                     else\
@@ -110,7 +122,7 @@ string slot_names[] = {"slot_0", "slot_1", "slot_2", "slot_3",
                 if (k >= x) {\
                     if((fpga_type->fg[k].type_of_res) == m){\
                         output_vec[i][index].slice_x2 = fpga_type->fg[k].slice_2;\
-                        /*cout << " right m " << m << " k " << k << " res " <<fpga_type->fg[k].slice_2 <<endl;*/\
+                        /*cout << "right m " << m << " k " << k << " res " <<fpga_type->fg[k].slice_2 <<endl;*/\
                         flag = 1;\
                     }\
                     else\

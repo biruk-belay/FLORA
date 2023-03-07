@@ -195,6 +195,20 @@ void flora::start_optimizer()
     write_output(&from_solver);
     cout <<"FLORA: finished VC707 optimizer " <<endl;
 
+#elif FPGA_VCU118
+    vcu118_inst = new vcu118();
+
+    param.width = vcu118_inst->width;
+    param.num_clk_regs  = vcu118_inst->num_clk_reg /2;
+    param.clb_per_tile  = vcu118_inst->clb_per_tile;
+    param.bram_per_tile = vcu118_inst->bram_per_tile;
+    param.dsp_per_tile  = vcu118_inst->dsp_per_tile;
+
+    cout <<"FLORA: starting VC707 MILP optimizer " <<endl;
+    vcu118_start_optimizer(&param, &from_solver);
+    write_output(&from_solver);
+    cout <<"FLORA: finished VC707 optimizer " <<endl;
+
 #endif  
 }
 
@@ -224,5 +238,9 @@ void flora::generate_xdc(std::string fplan_xdc_file)
     vc707_fine_grained *fg_vc707_instance = new vc707_fine_grained();
     //generate_cell_name(num_rm_partitions, &cell_name);
     generate_xdc_file(fg_vc707_instance, from_sol_ptr, param, num_rm_partitions, cell_name, fplan_xdc_file);
+#elif FPGA_VCU118
+    vcu118_fine_grained *fg_vcu118_instance = new vcu118_fine_grained();
+    //generate_cell_name(num_rm_partitions, &cell_name);
+    generate_xdc_file(fg_vcu118_instance, from_sol_ptr, param, num_rm_partitions, cell_name, fplan_xdc_file);
 #endif
 }

@@ -27,6 +27,9 @@ CFLAGS += -DFPGA_ZYNQ
 else ifeq ($(FPGA),VC707)
 SOURCES_SHARED += include/vc707.h src/vc707.cpp include/vc707_fine_grained.h src/vc707_fine_grained.cpp
 CFLAGS += -DFPGA_VC707
+else ifeq ($(FPGA),VCU118)
+SOURCES_SHARED += include/vcu118.h src/vcu118.cpp include/vcu118_fine_grained.h src/vcu118_fine_grained.cpp
+CFLAGS += -DFPGA_VCU118
 else 
 SOURCES_SHARED += include/zynq.h src/zynq.cpp include/zynq_fine_grained.h src/zynq_fine_grained.cpp
 CFLAGS += -DFPGA_ZYNQ
@@ -35,6 +38,8 @@ endif
 
 ifeq ($(FPGA),VC707)
 flora: SOURCES_MILP = src/milp_model_vc707.cpp
+else ifeq ($(FPGA),VCU118)
+flora: SOURCES_MILP = src/milp_model_vcu118.cpp
 endif
 
 flora: SOURCES += flora/src/flora.cpp
